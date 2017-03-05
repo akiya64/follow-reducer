@@ -12,12 +12,22 @@ client = Twitter::REST::Client.new do |config|
 end
 
 # APIでリストAutumnのメンバーを取得
-client.list_members("autumn1").each{ |user|
-  puts user.id
-}
+list_members = Array.new
+client.list_members(yaml["list_slug"]).each do |user|
+  list_members << user.id
+end
+puts "List:#{yaml["list_slug"]} has #{list_members.size} members"
 
-# APIでフォローのメンバーを取得
+# フォローのメンバーを取得
+current_follow = Array.new
+current_follow = client.friend_ids().to_a
 
-# Autumnにないフォローメンバーをリムーブ対象メンバーとしてリストアップ
+# Autumnにあって、Followしていないメンバーをフォローする
+follow_add = list_members - current_follow
+p follow_add
 
-# リムーブリストに従ってリムーブ実行
+# ムーブ対象メンバーとしてリストアップ
+remove_list = current_follow - list_members
+p remove_list
+
+# リムーブリストに従ってリムーブ実行、API上限があるので、Sleepしつつがいいかも
