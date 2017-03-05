@@ -19,15 +19,24 @@ end
 puts "List:#{yaml["list_slug"]} has #{list_members.size} members"
 
 # フォローのメンバーを取得
-current_follow = Array.new
 current_follow = client.friend_ids().to_a
+puts "Now Following #{current_follow.length} User"
+
+# Autumnにリストされているメンバー以外、リムーブ
+remove_list = current_follow - list_members
+puts "Unfollow #{remove_list.length} User..."
+puts "Estimated Time #{remove_list.length * 5}"
+
+remove_list.each do | id |
+  client.unfollow(id)
+  puts "Remove : #{id}"
+  sleep(5)
+end
 
 # Autumnにあって、Followしていないメンバーをフォローする
 follow_add = list_members - current_follow
-p follow_add
-
-# ムーブ対象メンバーとしてリストアップ
-remove_list = current_follow - list_members
-p remove_list
-
-# リムーブリストに従ってリムーブ実行、API上限があるので、Sleepしつつがいいかも
+follow_add.each do | id |
+  client.follow(id)
+  puts "Follow #{id}"
+  sleep(10)
+end
