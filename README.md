@@ -1,4 +1,4 @@
-# Replace Your follow with a List in Twitter. 
+# Replace your follow with a List in Twitter. 
 Require [Twitter Ruby Gem](https://github.com/sferik/twitter)
 
 ## On Windows 10 Require set SSL_CERT_FILE in PATH
